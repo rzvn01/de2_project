@@ -135,32 +135,7 @@ class WeatherDisplay:
 
         print(f"Response from ThingSpeak: {response.text}")
         response.close()
-
-
-
-    def upd_time(self):
-        """
-        Fetches the current date and time from the World Time API for the Europe/Rome timezone and formats it into a human-readable string.
-
-        This method sends a request to the World Time API, extracts the relevant information, and returns a formatted string representing the
-         last update time. The returned string includes the day and month of the update, as well as the hour and minute in 24-hour format.
-
-        Returns:
-            str: A formatted string indicating the last update time in the "Upd. DD/MM HH:mm" format.
-        """
-        url_call = "http://worldtimeapi.org/api/timezone/Europe/Rome"
-        clock = urequests.get(url_call)
-        clock_string = json.loads(clock.content)
-        datetime_str = clock_string["datetime"]
-
-        month = datetime_str[5:7]
-        day = datetime_str[8:10]
-        hour = datetime_str[11:13]
-        minute = datetime_str[14:16]
-
-        return "Upd." + day + "/" + month + " " + hour + ":" + minute
-    
-    
+ 
 
 if __name__ == "__main__":
     wifiManager = WiFiManager(ssid="rrrr", password="12345678")
@@ -173,9 +148,8 @@ if __name__ == "__main__":
             displayManager.oled_print("wifi...",0,40)
             wifiManager.connect_wifi()
             
-            weather_display.display_weather()
+            weather_display.display_weather()()
             
-
             displayManager.oled.fill(0)
             displayManager.oled_print("Disconnecting",0,20)
             displayManager.oled_print("from wifi...",0,40)
