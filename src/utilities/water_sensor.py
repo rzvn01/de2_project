@@ -31,7 +31,7 @@ class WaterSensor:
 
     def value(self):
         """
-        Read a value from the LDR in the specified range.
+        Read a value from the sensorin the specified range.
         :return: A string representing the value in the format "xx.x%".
         """
         raw_value = self.read()
