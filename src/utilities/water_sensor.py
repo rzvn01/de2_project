@@ -25,7 +25,6 @@ class WaterSensor:
     def read(self):
         """
         Read a raw value from the WATER SENSOR.
-        :return A value from 0 to 520.
         """
         return self.adc.read()
 
