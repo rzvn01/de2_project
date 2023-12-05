@@ -28,27 +28,27 @@ The software consists of several components:
 
 1. **LDR Class:**
    - Represents the Light Dependent Resistor sensor, allowing reading of light levels.
-   - Source File: `ldr.py`
+   - Source File: [ldr.py](https://github.com/rzvn01/de2_project/blob/main/src/utilities/ldr.py)
    - Usage: `ldr = LDR(pin)`
 
 2. **WaterSensor Class:**
    - Represents the water sensor, capable of detecting water presence.
-   - Source File: [water_sensor.py](https://github.com/rzvn01/de2_project/blob/main/src/utilities/bme280.py)
+   - Source File: [water_sensor.py](https://github.com/rzvn01/de2_project/blob/main/src/utilities/water_sensor.py)
    - Usage: `water_sensor = WaterSensor(pin)`
 
 3. **BME280 Class:**
    - Represents the BME280 sensor, providing methods for reading temperature, humidity, and pressure.
-   - Source File: `bme280.py`
+   - Source File: [bme280.py](https://github.com/rzvn01/de2_project/blob/main/src/utilities/bme280.py)
    - Usage: `bme = BME280()`
 
 4. **WiFiManager Class:**
    - Manages Wi-Fi connectivity for the device.
-   - Source File: `wifi_manager.py`
+   - Source File: [wifi_manager.py](https://github.com/rzvn01/de2_project/blob/main/src/utilities/wifi_manager.py)
    - Usage: `wifi_manager = WiFiManager(ssid, password)`
 
 5. **OLED Display Class (SH1106):**
    - Manages the OLED display.
-   - Source File: `sh1106.py`
+   - Source File: [sh1106.py](https://github.com/rzvn01/de2_project/blob/main/src/utilities/lcd_oled.py)
    - Usage: `oled = SH1106_I2C(width, height, i2c, addr, rotate)`
 
 ## Instructions
