@@ -115,22 +115,6 @@ following text was tested under Linux-based operating system.
     esptool.py --chip esp32 --port /dev/ttyUSB0 write_flash -z 0x1000 esp32-20230426-v1.20.0.bin
     ```
 
-**For ESP8266 chips:**
-
-3. [Download](https://micropython.org/download/esp8266/) the latest firmware, such as `esp8266-20230426-v1.20.0.bin`.
-
-4. Erase the Flash before deploying the firmware:
-
-    ```shell
-    esptool.py --chip esp8266 --port /dev/ttyUSB0 erase_flash
-    ```
-
-5. Deploy the firmware:
-
-    ```shell
-    esptool.py --chip esp8266 --port /dev/ttyUSB0 write_flash --flash_mode dio --flash_size 4MB 0x0 esp8266-20230426-v1.20.0.bin
-    ```
-
 ## Generating the Documentation
 
 //TODO
