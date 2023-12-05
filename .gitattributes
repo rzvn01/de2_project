@@ -1,0 +1,2 @@
+*.pptx filter=lfs diff=lfs merge=lfs -text
+ppt_presentation/de2_weather_station.pptx[[:space:]] filter=lfs diff=lfs merge=lfs -text

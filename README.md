@@ -58,10 +58,72 @@ The software consists of several components:
 1. Connect LDRs, water sensors, the BME280 sensor, and the OLED display to the microcontroller according to the provided schematic.
 2. Power up the microcontroller.
 
-**Flashing MicroPython:**
+## Flashing MicroPython
 
-1. Follow the MicroPython installation guide for your microcontroller.
-2. Upload the provided Python files to the microcontroller.
+To use MicroPython with a real ESP32 board, you will need to follow these steps:
+
+* Download MicroPython firmware
+* Flash the firmware
+* Connect to the Board's Serial REPL and interact with MicroPython
+* Transfer files to the ESP32 board
+
+There are several very good tutorials how to install and use MicroPython on an ESP microcontroller, such as [this one](https://pythonforundergradengineers.com/how-to-install-micropython-on-an-esp32.html) for Windows. The following text was tested under Linux-based operating system.
+
+> **NOTE:** The MicroPython firmware can also be flashed by Thonny IDE.
+
+1. Install [Python](https://www.python.org/downloads/).
+
+2. Open terminal (typically `Ctrl+Alt+T`) and install `esptool`:
+
+    ```shell
+    pip install esptool
+    ```
+
+   Connect your ESP board and test the [`esptool`](https://docs.espressif.com/projects/esptool/en/latest/esp32/esptool/basic-commands.html#):
+
+    ```shell
+    # Get the version
+    esptool.py version
+
+    # Read chip info, serial port, MAC address, and others
+    # Note: Use `dmesg` command to find your USB port
+    esptool.py --port /dev/ttyUSB0 flash_id
+
+    # Read all eFuses from the chip
+    espefuse.py --port /dev/ttyUSB0 summary
+    ```
+
+**For ESP32 chips:**
+
+3. [Download](http://micropython.org/download/) the latest firmware for your target device, such as `esp32-20230426-v1.20.0.bin` for Espressif ESP32.
+
+4. Erase the Flash of target device (use your port name):
+
+    ```shell
+    esptool.py --chip esp32 --port /dev/ttyUSB0 erase_flash
+    ```
+
+5. Deploy the new firmware:
+
+    ```shell
+    esptool.py --chip esp32 --port /dev/ttyUSB0 write_flash -z 0x1000 esp32-20230426-v1.20.0.bin
+    ```
+
+**For ESP8266 chips:**
+
+3. [Download](https://micropython.org/download/esp8266/) the latest firmware, such as `esp8266-20230426-v1.20.0.bin`.
+
+4. Erase the Flash before deploying the firmware:
+
+    ```shell
+    esptool.py --chip esp8266 --port /dev/ttyUSB0 erase_flash
+    ```
+
+5. Deploy the firmware:
+
+    ```shell
+    esptool.py --chip esp8266 --port /dev/ttyUSB0 write_flash --flash_mode dio --flash_size 4MB 0x0 esp8266-20230426-v1.20.0.bin
+    ```
 
 **Running the Application:**
 
