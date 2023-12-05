@@ -3,9 +3,9 @@ import time
 
 
 class LDR:
-    """This class read a value from a light dependent resistor (LDR)"""
 
     def __init__(self, pin, min_value=0, max_value=100):
+        
         """
         Initializes a new instance.
         :parameter pin A pin that's connected to an LDR.
@@ -26,16 +26,20 @@ class LDR:
         self.max_value = max_value
 
     def read(self):
+        
         """
         Read a raw value from the LDR.
         :return A value from 0 to 4095.
         """
+        
         return self.adc.read()
 
     def value(self):
+        
         """
         Read a value from the LDR in the specified range.
         :return: A string representing the value in the format "xx.x%".
         """
+        
         raw_value = self.read()
         return float(self.max_value - self.min_value) * raw_value / 4095

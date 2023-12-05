@@ -8,6 +8,10 @@ from machine import soft_reset
 class DisplayManager():
     
     def __init__(self):
+        
+        """
+        Initializes the DisplayManager object, configuring OLED and LCD displays using I2C communication.
+        """
                
         self.WIDTH = 128  # OLED display width
         self.HEIGHT = 64  # OLED display height
@@ -30,6 +34,17 @@ class DisplayManager():
         self.lcd.display_on()
         
     def double_print(self, first_sensor, first_value, second_sensor,second_value):
+        
+        """
+        Displays two sensor readings on the LCD display with a backlight, each on a separate line.
+
+        Parameters:
+        - first_sensor (str): Name of the first sensor.
+        - first_value (str): Value of the first sensor.
+        - second_sensor (str): Name of the second sensor.
+        - second_value (str): Value of the second sensor.
+        """
+        
         self.lcd.backlight_on()
         self.lcd.clear()
         self.lcd.move_to(0,0)
@@ -61,6 +76,15 @@ class DisplayManager():
         
         
     def single_print(self,first_sensor, first_value):
+        
+        """
+        Displays a single sensor reading on the LCD display with a backlight.
+
+        Parameters:
+        - first_sensor (str): Name of the sensor.
+        - first_value (str): Value of the sensor.
+        """
+         
         self.lcd.backlight_on()
         self.lcd.clear()
         self.lcd.move_to(0,0)
