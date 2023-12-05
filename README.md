@@ -7,7 +7,7 @@
 ## Theoretical Description and Explanation
 
 Our project focuses on implementing a versatile system that combines various sensors, such as Light Dependent
-Resistors (LDRs), water sensors, and a BME280 sensor, with an OLED display. The goal is to create a portable device that
+Resistors (LDRs), water sensors, and a BME280 sensor, with displays. The goal is to create a portable device that
 can monitor environmental conditions, providing real-time data on light levels, water presence, temperature, humidity,
 and pressure. The system utilizes MicroPython, making it easy to deploy and program.
 
@@ -141,9 +141,10 @@ following text was tested under Linux-based operating system.
 2. Make sure all files are saved into microcontroller's memory.
 3. The displays should show real-time data from the sensors, including light levels, water presence, temperature,
    humidity, and pressure.
+> **NOTE:** The wrapper for functionality must be saved as `main.py` in order to get the desired behaviour for  `deepsleep()` function.
+
    ![circuit](photos/circuit.png)
-## Troubleshooting 
-- ***The wrapper for functionality must be saved as `main.py` in order to get the desired behaviour for  `deepsleep()` function.***
+## Troubleshooting
 - If the device fails to connect to Wi-Fi, check your credentials and network availability.
 - Ensure the sensors are correctly wired.
 - Make sure all packages are up-to-date and not deprecated.
