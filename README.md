@@ -33,7 +33,7 @@ The software consists of several components:
 
 2. **WaterSensor Class:**
    - Represents the water sensor, capable of detecting water presence.
-   - Source File: `water_sensor.py`
+   - Source File: [water_sensor.py](https://github.com/rzvn01/de2_project/blob/main/src/utilities/bme280.py)
    - Usage: `water_sensor = WaterSensor(pin)`
 
 3. **BME280 Class:**
