@@ -1,0 +1,189 @@
+
+
+<!doctype html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Project Overview &#8212; Weather Station 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=532c1bf3" />
+    
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Main Code" href="main.html" />
+    <link rel="prev" title="Weather Station Documentation" href="index.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="main.html" title="Main Code"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Weather Station Documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Weather Station 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Project Overview</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="project-overview">
+<span id="project"></span><h1>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading">¶</a></h1>
+<p>Our project focuses on implementing a versatile system that combines various sensors, such as Light Dependent Resistors (LDRs), water sensors, and a BME280 sensor, with an OLED display. The goal is to create a portable device that can monitor environmental conditions, providing real-time data on light levels, water presence, temperature, humidity, and pressure. The system utilizes MicroPython, making it easy to deploy and program.</p>
+<p><strong>You can find the Git repository for the project</strong> <a class="reference external" href="https://github.com/rzvn01/de2_project/">here.</a></p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#hardware-description-of-demo-application" id="id2">Hardware Description of Demo Application</a></p></li>
+<li><p><a class="reference internal" href="#software-description" id="id3">Software Description</a></p></li>
+<li><p><a class="reference internal" href="#instructions" id="id4">Instructions</a></p></li>
+<li><p><a class="reference internal" href="#references" id="id5">References</a></p></li>
+</ul>
+</nav>
+<section id="hardware-description-of-demo-application">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Hardware Description of Demo Application</a><a class="headerlink" href="#hardware-description-of-demo-application" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Microcontroller (e.g., ESP8266)</strong>: The ESP32 serves as the central processing unit running MicroPython, handling sensor data, connecting to Wi-Fi, and driving the display.</p></li>
+<li><p><strong>OLED Display (e.g., SH1106)</strong>: Displays information collected from sensors.</p></li>
+<li><p><strong>Light Dependent Resistors (LDRs)</strong>: Measure ambient light levels.</p></li>
+<li><p><strong>Water Sensors</strong>: Detect the presence of water.</p></li>
+<li><p><strong>BME280 Sensor</strong>: Measures temperature, humidity, and pressure.</p></li>
+</ol>
+</section>
+<section id="software-description">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Software Description</a><a class="headerlink" href="#software-description" title="Link to this heading">¶</a></h2>
+<p>This project contains a main.py file, as well as several utility classes, both of which can be found in the current documentation, in the original table of contents on the first page.</p>
+</section>
+<section id="instructions">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Instructions</a><a class="headerlink" href="#instructions" title="Link to this heading">¶</a></h2>
+<dl>
+<dt><strong>Setting Up the Hardware</strong></dt><dd><ol class="arabic simple">
+<li><p>Connect LDRs, water sensors, the BME280 sensor, and the OLED display to the microcontroller according to the schematic provided below.</p></li>
+<li><p>Power up the microcontroller.</p></li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Circuit schematic" src="_images/schematic_diagram.png" />
+</dd>
+<dt><strong>Flashing MicroPython</strong></dt><dd><ol class="arabic simple">
+<li><p>Download MicroPython firmware.</p></li>
+<li><p>Flash the firmware.</p></li>
+<li><p>Connect to the Board’s Serial REPL and interact with MicroPython.</p></li>
+<li><p>Transfer files to the ESP32 board.</p></li>
+</ol>
+</dd>
+</dl>
+<p>There are several very good tutorials how to install and use MicroPython on an ESP microcontroller, such as <a class="reference external" href="https://pythonforundergradengineers.com/how-to-install-micropython-on-an-esp32.html/">this one</a>  for Windows.</p>
+<p>NOTE: The MicroPython firmware can also be flashed by Thonny IDE.</p>
+<dl class="simple">
+<dt><strong>Running the Application</strong></dt><dd><ol class="arabic simple">
+<li><p>Power on the device.</p></li>
+<li><p>Make sure all files are saved into microcontroller’s memory.</p></li>
+<li><p>The displays should show real-time data from the sensors, including light levels, water presence, temperature, humidity, and pressure.</p></li>
+</ol>
+</dd>
+<dt><strong>Troubleshooting</strong></dt><dd><ol class="arabic simple">
+<li><p>The wrapper for functionality must be saved as main.py in order to get the desired behaviour for deepsleep() function.</p></li>
+<li><p>If the device fails to connect to Wi-Fi, check your credentials and network availability.</p></li>
+<li><p>Ensure the sensors are correctly wired.</p></li>
+<li><p>Make sure all packages are up-to-date and not deprecated.</p></li>
+</ol>
+</dd>
+<dt><strong>Demo video</strong></dt><dd><p>You can find a short video demonstrating the project functionality <a class="reference external" href="https://github-production-user-asset-6210df.s3.amazonaws.com/100044309/288198043-b4316866-3fb9-4cb9-b8db-3046aaa8ed4d.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20231205%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20231205T212200Z&amp;X-Amz-Expires=300&amp;X-Amz-Signature=23d58c3d78d4905623290399ac13997d8c84b4cf8f86222df5795fdf93ee4fe4&amp;X-Amz-SignedHeaders=host&amp;actor_id=148204733&amp;key_id=0&amp;repo_id=721313266/">here!</a></p>
+</dd>
+</dl>
+</section>
+<section id="references">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">References</a><a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>MicroPython Documentation: <a class="reference external" href="https://micropython.org/">MicroPython</a></p></li>
+<li><p>SH1106 OLED Driver Source Code: <a class="reference external" href="https://github.com/robert-hh/SH1106/">sh1106.py</a></p></li>
+<li><p>ESP8266 Documentation: <a class="reference external" href="https://docs.micropython.org/en/latest/esp32/quickref.html/">ESP8266 MicroPython</a></p></li>
+<li><p>BME280 Datasheet: <a class="reference external" href="https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf/">BME280 Datasheet</a></p></li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Project Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-description-of-demo-application">Hardware Description of Demo Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#software-description">Software Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#instructions">Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility_classes.html">Utility Classes</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/project.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="main.html" title="Main Code"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Weather Station Documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Weather Station 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Project Overview</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, Gavrila Andreea-Alexandra, Barbulet Ana-Maria, Cacu Razvan.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    </div>
+  </body>
+</html>

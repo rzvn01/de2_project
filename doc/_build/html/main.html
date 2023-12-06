@@ -1,0 +1,352 @@
+
+
+<!doctype html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Main Code &#8212; Weather Station 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=532c1bf3" />
+    
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utility Classes" href="utility_classes.html" />
+    <link rel="prev" title="Project Overview" href="project.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="utility_classes.html" title="Utility Classes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="project.html" title="Project Overview"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Weather Station 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Main Code</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p id="main"><strong>You can find the Git repository for the project</strong> <a class="reference external" href="https://github.com/rzvn01/de2_project/">here.</a></p>
+<section id="main-code">
+<h1>Main Code<a class="headerlink" href="#main-code" title="Link to this heading">¶</a></h1>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">ADC</span><span class="p">,</span> <span class="n">Pin</span><span class="p">,</span> <span class="n">I2C</span><span class="p">,</span> <span class="n">deepsleep</span><span class="p">,</span> <span class="n">lightsleep</span>
+<span class="kn">from</span> <span class="nn">lcd_api</span> <span class="kn">import</span> <span class="n">LcdApi</span>
+<span class="kn">from</span> <span class="nn">i2c_lcd</span> <span class="kn">import</span> <span class="n">I2cLcd</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">ldr</span> <span class="kn">import</span> <span class="n">LDR</span>
+<span class="kn">from</span> <span class="nn">water_sensor</span> <span class="kn">import</span> <span class="n">WaterSensor</span>
+<span class="kn">from</span> <span class="nn">wifi_manager</span> <span class="kn">import</span> <span class="n">WiFiManager</span>
+<span class="kn">from</span> <span class="nn">lcd_oled</span> <span class="kn">import</span> <span class="n">SH1106_I2C</span>
+<span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">soft_reset</span>
+<span class="kn">import</span> <span class="nn">bme280</span>
+<span class="kn">import</span> <span class="nn">urequests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">network</span>
+<span class="kn">from</span> <span class="nn">display_manager</span> <span class="kn">import</span> <span class="n">DisplayManager</span>
+</pre></div>
+</div>
+<section id="weatherdisplay-class">
+<h3><cite>WeatherDisplay</cite> Class<a class="headerlink" href="#weatherdisplay-class" title="Link to this heading">¶</a></h3>
+<p>The <cite>WeatherDisplay</cite> class contains methods for initialization, reading sensors, displaying sensor values, fetching weather data, displaying weater data and sending sensor data to ThingSpeak.</p>
+</section>
+</section>
+<section id="initialization">
+<h2>Initialization<a class="headerlink" href="#initialization" title="Link to this heading">¶</a></h2>
+<p>The <cite>__init__</cite> method initializes the <cite>WeatherDisplay</cite> object with sensor pins, OpenWeatherMap API key, city, and unit settings.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p>displayManager (DisplayManager): An instance of DisplayManager for managing the display.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">displayManager</span><span class="p">):</span>
+
+     <span class="bp">self</span><span class="o">.</span><span class="n">LDR_PIN</span> <span class="o">=</span> <span class="mi">39</span>
+     <span class="bp">self</span><span class="o">.</span><span class="n">WATER_SENSOR_PIN</span> <span class="o">=</span> <span class="mi">36</span>
+     <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;ce0138a17e760fac657ac45c93b0fa9b&quot;</span>
+     <span class="bp">self</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="s2">&quot;BRNO,cz&quot;</span>
+     <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span> <span class="o">=</span> <span class="s2">&quot;current,minutely,hourly,alerts&quot;</span>
+     <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s2">&quot;metric&quot;</span>
+
+     <span class="bp">self</span><span class="o">.</span><span class="n">i2c</span> <span class="o">=</span> <span class="n">I2C</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">scl</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="mi">22</span><span class="p">),</span> <span class="n">sda</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="mi">400_000</span><span class="p">)</span>
+     <span class="bp">self</span><span class="o">.</span><span class="n">bme</span> <span class="o">=</span> <span class="n">bme280</span><span class="o">.</span><span class="n">BME280</span><span class="p">(</span><span class="n">i2c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">i2c</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="mh">0x76</span><span class="p">)</span>
+     <span class="bp">self</span><span class="o">.</span><span class="n">water_sensor</span> <span class="o">=</span> <span class="n">WaterSensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WATER_SENSOR_PIN</span><span class="p">)</span>
+     <span class="bp">self</span><span class="o">.</span><span class="n">ldr</span> <span class="o">=</span> <span class="n">LDR</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LDR_PIN</span><span class="p">)</span>
+
+     <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span> <span class="o">=</span> <span class="n">displayManager</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-sensors">
+<h2>Reading Sensors<a class="headerlink" href="#reading-sensors" title="Link to this heading">¶</a></h2>
+<p>The <cite>read_sensors</cite> method reads sensor values for moisture, light intensity, temperature, humidity, and pressure.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>Tuple: A tuple containing moisture, light intensity, temperature, humidity, and pressure values.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_sensors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="n">moisture</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">water_sensor</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+    <span class="n">light_intensity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ldr</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bme</span><span class="o">.</span><span class="n">temperature</span>
+    <span class="n">hum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bme</span><span class="o">.</span><span class="n">humidity</span>
+    <span class="n">pres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bme</span><span class="o">.</span><span class="n">pressure</span>
+
+    <span class="k">return</span> <span class="n">moisture</span><span class="p">,</span> <span class="n">light_intensity</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">hum</span><span class="p">,</span> <span class="n">pres</span>
+</pre></div>
+</div>
+</section>
+<section id="displaying-sensor-values">
+<h2>Displaying Sensor Values<a class="headerlink" href="#displaying-sensor-values" title="Link to this heading">¶</a></h2>
+<p>The <cite>display_sensor_values</cite> method displays sensor values on the connected display.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p>moisture (float): Moisture level in percentage.</p></li>
+<li><p>light_intensity (float): Light intensity in percentage.</p></li>
+<li><p>temp (float): Temperature in Celsius.</p></li>
+<li><p>hum (float): Humidity in percentage.</p></li>
+<li><p>pres (float): Atmospheric pressure in hPa.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">display_sensor_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moisture</span><span class="p">,</span> <span class="n">light_intensity</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">hum</span><span class="p">,</span> <span class="n">pres</span><span class="p">):</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">lcd</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">double_print</span><span class="p">(</span><span class="s2">&quot;Moisture&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.1f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">moisture</span><span class="p">),</span> <span class="s2">&quot;Light&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;</span><span class="si">{:.1f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">light_intensity</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">double_print</span><span class="p">(</span><span class="s2">&quot;Temp&quot;</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="s2">&quot;Humidity&quot;</span><span class="p">,</span> <span class="n">hum</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">single_print</span><span class="p">(</span><span class="s2">&quot;Pressure&quot;</span><span class="p">,</span> <span class="n">pres</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fetching-weather-data">
+<h2>Fetching Weather Data<a class="headerlink" href="#fetching-weather-data" title="Link to this heading">¶</a></h2>
+<p>The <cite>fetch_weather_data</cite> method fetches weather forecast data from the OpenWeatherMap API.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fetch_weather_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">     Fetches weather forecast data from the OpenWeatherMap API.</span>
+
+<span class="sd">     Returns:</span>
+<span class="sd">     dict: Weather forecast data in JSON format.</span>
+<span class="sd">     &quot;&quot;&quot;</span>
+
+     <span class="n">url_call</span> <span class="o">=</span> <span class="p">(</span>
+         <span class="s2">&quot;https://api.openweathermap.org/data/2.5/forecast?&quot;</span>
+         <span class="sa">f</span><span class="s2">&quot;q=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="si">}</span><span class="s2">&amp;exclude=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude</span><span class="si">}</span><span class="s2">&amp;units=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="si">}</span><span class="s2">&amp;appid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="si">}</span><span class="s2">&quot;</span>
+     <span class="p">)</span>
+
+     <span class="n">w</span> <span class="o">=</span> <span class="n">urequests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_call</span><span class="p">)</span>
+     <span class="n">weather_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+     <span class="n">w</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+     <span class="k">return</span> <span class="n">weather_data</span>
+</pre></div>
+</div>
+</section>
+<section id="displaying-weather">
+<h2>Displaying Weather<a class="headerlink" href="#displaying-weather" title="Link to this heading">¶</a></h2>
+<p>The <cite>display_weather</cite> method displays the weather forecast on the connected display, including temperature, wind speed, rain, pressure, and humidity. It also reads sensor values and uploads data to ThingSpeak.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">display_weather</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="n">forecast</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_weather_data</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">day_data</span> <span class="ow">in</span> <span class="n">forecast</span><span class="p">[</span><span class="s1">&#39;list&#39;</span><span class="p">]:</span>
+        <span class="c1"># Extract the hour from the dt_txt field</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">day_data</span><span class="p">[</span><span class="s1">&#39;dt_txt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># Check if the hour is 12 (noon)</span>
+        <span class="k">if</span> <span class="n">hour</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">hour</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">day_data</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;temp&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="s1">&#39;rain&#39;</span> <span class="ow">in</span> <span class="n">day_data</span><span class="p">:</span>
+                <span class="n">rain_qty</span> <span class="o">=</span> <span class="n">day_data</span><span class="p">[</span><span class="s1">&#39;rain&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rain_qty</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">humidity</span> <span class="o">=</span> <span class="n">day_data</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;humidity&#39;</span><span class="p">]</span>
+            <span class="n">pressure</span> <span class="o">=</span> <span class="n">day_data</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span>
+            <span class="n">wind</span> <span class="o">=</span> <span class="n">day_data</span><span class="p">[</span><span class="s1">&#39;wind&#39;</span><span class="p">][</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span>
+            <span class="n">weather_type</span> <span class="o">=</span> <span class="n">day_data</span><span class="p">[</span><span class="s1">&#39;weather&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;main&#39;</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">lcd</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">lcd</span><span class="o">.</span><span class="n">move_to</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">lcd</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">day_data</span><span class="p">[</span><span class="s1">&#39;dt_txt&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">lcd</span><span class="o">.</span><span class="n">move_to</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">lcd</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Weather: &quot;</span> <span class="o">+</span> <span class="n">weather_type</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;FORECAST FEATURE&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;Temperature:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;Wind:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">wind</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;km/h&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;Rain:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rain_qty</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;Pressure:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;hPa&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;Humidity:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">humidity</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;READING DATA  &quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;FROM OUR SENSORS&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+
+    <span class="n">moisture</span><span class="p">,</span> <span class="n">light_intensity</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">hum</span><span class="p">,</span> <span class="n">pres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_sensors</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">display_sensor_values</span><span class="p">(</span><span class="n">moisture</span><span class="p">,</span> <span class="n">light_intensity</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">hum</span><span class="p">,</span> <span class="n">pres</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">lcd</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;UPLOADING DATA&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;TO THINGSPEAK&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">send_to_thingspeak</span><span class="p">(</span><span class="n">moisture</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">hum</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">light_intensity</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sending-to-thingspeak">
+<h2>Sending to ThingSpeak<a class="headerlink" href="#sending-to-thingspeak" title="Link to this heading">¶</a></h2>
+<p>The <cite>send_to_thingspeak</cite> method sends sensor data to the ThingSpeak IoT platform.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p>moisture (float): Moisture level in percentage.</p></li>
+<li><p>temp (float): Temperature in Celsius.</p></li>
+<li><p>hum (float): Humidity in percentage.</p></li>
+<li><p>pres (float): Atmospheric pressure in hPa.</p></li>
+<li><p>light_intensity (float): Light intensity in percentage.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">send_to_thingspeak</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moisture</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">hum</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">light_intensity</span><span class="p">):</span>
+
+ <span class="n">API_URL</span> <span class="o">=</span> <span class="s2">&quot;https://api.thingspeak.com/update&quot;</span>
+ <span class="n">API_KEY</span> <span class="o">=</span> <span class="s2">&quot;DO2L1H0RIXIHDZ3A&quot;</span>
+
+ <span class="c1"># POST request</span>
+ <span class="n">request_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">API_URL</span><span class="si">}</span><span class="s2">?api_key=</span><span class="si">{</span><span class="n">API_KEY</span><span class="si">}</span><span class="s2">&quot;</span>
+ <span class="n">json</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;field1&quot;</span><span class="p">:</span> <span class="n">temp</span><span class="p">,</span> <span class="s2">&quot;field2&quot;</span><span class="p">:</span> <span class="n">hum</span><span class="p">,</span> <span class="s2">&quot;field3&quot;</span><span class="p">:</span> <span class="n">pres</span><span class="p">,</span> <span class="s2">&quot;field4&quot;</span><span class="p">:</span> <span class="n">moisture</span><span class="p">,</span> <span class="s2">&quot;field5&quot;</span><span class="p">:</span> <span class="n">light_intensity</span><span class="p">}</span>
+ <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">}</span>
+ <span class="n">response</span> <span class="o">=</span> <span class="n">urequests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">request_url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+ <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response from ThingSpeak: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+ <span class="n">response</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="main-execution">
+<h2>Main Execution<a class="headerlink" href="#main-execution" title="Link to this heading">¶</a></h2>
+<p>The <cite>__main__</cite> block initializes the required managers and the <cite>WeatherDisplay</cite> object, and then enters an infinite loop to continuously display and update weather information.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+ <span class="n">wifiManager</span> <span class="o">=</span> <span class="n">WiFiManager</span><span class="p">(</span><span class="n">ssid</span><span class="o">=</span><span class="s2">&quot;rrrr&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;12345678&quot;</span><span class="p">)</span>
+ <span class="n">displayManager</span> <span class="o">=</span> <span class="n">DisplayManager</span><span class="p">()</span>
+ <span class="n">weather_display</span> <span class="o">=</span> <span class="n">WeatherDisplay</span><span class="p">(</span><span class="n">displayManager</span><span class="p">)</span>
+
+ <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+     <span class="n">displayManager</span><span class="o">.</span><span class="n">oled</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+     <span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;Connecting to &quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+     <span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;wifi...&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+     <span class="n">wifiManager</span><span class="o">.</span><span class="n">connect_wifi</span><span class="p">()</span>
+
+     <span class="n">weather_display</span><span class="o">.</span><span class="n">display_weather</span><span class="p">()</span>
+
+     <span class="n">displayManager</span><span class="o">.</span><span class="n">oled</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+     <span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;Disconnecting&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+     <span class="n">displayManager</span><span class="o">.</span><span class="n">oled_print</span><span class="p">(</span><span class="s2">&quot;from wifi...&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+     <span class="n">wifiManager</span><span class="o">.</span><span class="n">disconnect_wifi</span><span class="p">()</span>
+     <span class="n">displayManager</span><span class="o">.</span><span class="n">oled</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+     <span class="n">deepsleep</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="project.html">Project Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Main Code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#imports">Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initialization">Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-sensors">Reading Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#displaying-sensor-values">Displaying Sensor Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fetching-weather-data">Fetching Weather Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#displaying-weather">Displaying Weather</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sending-to-thingspeak">Sending to ThingSpeak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-execution">Main Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utility_classes.html">Utility Classes</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/main.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="utility_classes.html" title="Utility Classes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="project.html" title="Project Overview"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Weather Station 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Main Code</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, Gavrila Andreea-Alexandra, Barbulet Ana-Maria, Cacu Razvan.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    </div>
+  </body>
+</html>

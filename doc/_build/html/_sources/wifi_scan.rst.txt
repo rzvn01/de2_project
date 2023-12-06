@@ -1,0 +1,39 @@
+.. _wifi_scan:
+
+Wi-Fi Scan
+==========
+
+This example illustrates how to configure and connect an ESP32 microcontroller to a Wi-Fi network using MicroPython.
+
+.. contents:: Table of Contents
+   :local:
+   :depth: 2
+
+Introduction
+------------
+
+The `wifi_scan.py` script is designed to configure and connect an ESP32 to a Wi-Fi network. It includes functions for connecting, disconnecting, and displaying Wi-Fi configuration details.
+
+Usage
+-----
+
+To use this example:
+
+1. Update the `WIFI_SSID` and `WIFI_PSWD` variables with your Wi-Fi credentials.
+2. Upload and run the script on your ESP32 device.
+
+Wi-Fi Connection Functions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `connect_wifi` and `disconnect_wifi` functions activate/deactivate the Wi-Fi interface and connect/disconnect from a specified network.
+
+.. code-block:: python
+
+   def connect_wifi(ssid, password):
+       """
+       Connect to Wi-Fi network.
+
+       Activates the Wi-Fi interface, connects to the specified network,
+       and waits until the connection is established.
+
+       :

@@ -1,0 +1,274 @@
+
+
+<!doctype html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Utility Classes &#8212; Weather Station 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=532c1bf3" />
+    
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Main Code" href="main.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="main.html" title="Main Code"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Weather Station 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Utility Classes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="utility-classes">
+<span id="id1"></span><h1>Utility Classes<a class="headerlink" href="#utility-classes" title="Link to this heading">¶</a></h1>
+<p><strong>You can find the Git repository for the project</strong> <a class="reference external" href="https://github.com/rzvn01/de2_project/">here.</a></p>
+<section id="ldr-class">
+<h2>LDR Class<a class="headerlink" href="#ldr-class" title="Link to this heading">¶</a></h2>
+<p>Represents the Light Dependent Resistor sensor, allowing reading of light levels. It has the following methods:</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>Method <strong>__init__</strong>: initializes a new instance.</dt><dd><ul class="simple">
+<li><p>parameter pin: A pin that’s connected to an LDR.</p></li>
+<li><p>parameter min_value: A min value that can be returned by value() method.</p></li>
+<li><p>parameter max_value: A max value that can be returned by value() method.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Method <strong>read</strong>: reads a raw value from the LDR, between 0 and 4095, and returns it.</p></li>
+<li><p>Method <strong>value</strong>: reads a value from the LDR in the specified range and returns a string representing the value in the format “xx.x%”.</p></li>
+</ol>
+<p>Usage: <em>ldr = LDR(pin)</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">ADC</span><span class="p">,</span> <span class="n">Pin</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="k">class</span> <span class="nc">LDR</span><span class="p">:</span>
+
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">min_value</span> <span class="o">&gt;=</span> <span class="n">max_value</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Min value is greater or equal to max value&#39;</span><span class="p">)</span>
+
+    <span class="c1"># initialize ADC (analog to digital conversion)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">adc</span> <span class="o">=</span> <span class="n">ADC</span><span class="p">(</span><span class="n">Pin</span><span class="p">(</span><span class="n">pin</span><span class="p">))</span>
+
+    <span class="c1"># set 11dB input attenuation (voltage range roughly 0.0v - 3.6v)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">adc</span><span class="o">.</span><span class="n">atten</span><span class="p">(</span><span class="n">ADC</span><span class="o">.</span><span class="n">ATTN_11DB</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span> <span class="o">=</span> <span class="n">min_value</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="n">max_value</span>
+
+<span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">adc</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="n">raw_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span><span class="p">)</span> <span class="o">*</span> <span class="n">raw_value</span> <span class="o">/</span> <span class="mi">4095</span>
+</pre></div>
+</div>
+</section>
+<section id="watersensor-class">
+<h2>WaterSensor Class<a class="headerlink" href="#watersensor-class" title="Link to this heading">¶</a></h2>
+<p>Represents the water sensor, capable of detecting water presence and it has the following methods:</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>Method <strong>__init__</strong>: initializes a new instance.</dt><dd><p>-parameter pin: A pin that’s connected to a water sensor.</p>
+</dd>
+</dl>
+</li>
+<li><p>Method <strong>read</strong>: reads a raw value from the water sensor.</p></li>
+<li><p>Method <strong>value</strong>: reads a value from the water sensor in the specified range and returns a string representing the value in the format “xx.x%”.</p></li>
+</ol>
+<p>Usage: <em>water_sensor = WaterSensor(pin)</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">ADC</span><span class="p">,</span> <span class="n">Pin</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">class</span> <span class="nc">WaterSensor</span><span class="p">:</span>
+
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">min_value</span> <span class="o">&gt;=</span> <span class="n">max_value</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Min value is greater or equal to max value&#39;</span><span class="p">)</span>
+
+    <span class="c1"># initialize ADC (analog to digital conversion)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">adc</span> <span class="o">=</span> <span class="n">ADC</span><span class="p">(</span><span class="n">Pin</span><span class="p">(</span><span class="n">pin</span><span class="p">))</span>
+
+    <span class="c1"># set 11dB input attenuation (voltage range roughly 0.0v - 3.6v)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">adc</span><span class="o">.</span><span class="n">atten</span><span class="p">(</span><span class="n">ADC</span><span class="o">.</span><span class="n">ATTN_11DB</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span> <span class="o">=</span> <span class="n">min_value</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="n">max_value</span>
+
+<span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">adc</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="n">raw_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span><span class="p">)</span> <span class="o">*</span> <span class="n">raw_value</span> <span class="o">/</span> <span class="mi">2048</span>
+</pre></div>
+</div>
+</section>
+<section id="wifimanager-class">
+<h2>WiFiManager Class<a class="headerlink" href="#wifimanager-class" title="Link to this heading">¶</a></h2>
+<p>Manages Wi-Fi connectivity for the device. It has the following methods:</p>
+<ol class="arabic simple">
+<li><p>Method <strong>__init__</strong>: initializes a new instance.</p></li>
+<li><p>Method <strong>connect_wifi</strong>: activates the Wi-Fi interface, connects to the specified network, and waits until the connection is established.</p></li>
+<li><p>Method <strong>disconnect_wifi</strong>: disconnects from Wi-Fi network; deactivates the Wi-Fi interface if active and checks if the device is not connected to any Wi-Fi network.</p></li>
+</ol>
+<p>Usage: <em>wifi_manager = WiFiManager(ssid, password)</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">network</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+
+<span class="k">class</span> <span class="nc">WiFiManager</span><span class="p">:</span>
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ssid</span><span class="o">=</span><span class="s2">&quot;rrrr&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;12345678&quot;</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ssid</span> <span class="o">=</span> <span class="n">ssid</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">WLAN</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">STA_IF</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">connect_wifi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep_ms</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">isconnected</span><span class="p">():</span>
+        <span class="c1"># Activate the Wi-Fi interface</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">active</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Connect to the specified Wi-Fi network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ssid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+
+        <span class="c1"># Wait until the connection is established</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connecting to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ssid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">isconnected</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Done&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Already connected&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">disconnect_wifi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="c1"># Check if the Wi-Fi interface is active</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">active</span><span class="p">():</span>
+        <span class="c1"># Deactivate the Wi-Fi interface</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">active</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Check if the device is not connected to any Wi-Fi network</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">isconnected</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Disconnected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="bme280-class">
+<h2>BME280 Class<a class="headerlink" href="#bme280-class" title="Link to this heading">¶</a></h2>
+<p>Represents the BME280 sensor, providing methods for reading temperature, humidity, and pressure. It is specific to the BME280 sensor and you can find it <a class="reference external" href="https://github.com/rzvn01/de2_project/blob/main/utilities/bme280.py/">here.</a></p>
+<p>Usage: <em>bme = BME280()</em></p>
+</section>
+<section id="oled-display-class-sh1106">
+<h2>OLED Display Class (SH1106)<a class="headerlink" href="#oled-display-class-sh1106" title="Link to this heading">¶</a></h2>
+<p>Manages the OLED display and is specific to it. You can find it <a class="reference external" href="https://github.com/rzvn01/de2_project/blob/main/utilities/lcd_oled.py/">here.</a></p>
+<p>Usage: <em>oled = SH1106_I2C(width, height, i2c, addr, rotate)</em></p>
+</section>
+<section id="i2clcd-class">
+<h2>I2cLcd Class<a class="headerlink" href="#i2clcd-class" title="Link to this heading">¶</a></h2>
+<p>Implements a HD44780 character LCD connected via PCF8574 on I2C. You can find it <a class="reference external" href="https://github.com/rzvn01/de2_project/blob/main/utilities/i2c_lcd.py/">here.</a></p>
+</section>
+<section id="lcdapi-class">
+<h2>LcdApi Class<a class="headerlink" href="#lcdapi-class" title="Link to this heading">¶</a></h2>
+<p>Implements the API for talking with HD44780 compatible character LCDs. You can find it <a class="reference external" href="https://github.com/rzvn01/de2_project/blob/main/utilities/lcd_api.py/">here.</a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="project.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main Code</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utility Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ldr-class">LDR Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#watersensor-class">WaterSensor Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wifimanager-class">WiFiManager Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bme280-class">BME280 Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oled-display-class-sh1106">OLED Display Class (SH1106)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i2clcd-class">I2cLcd Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lcdapi-class">LcdApi Class</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/utility_classes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="main.html" title="Main Code"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Weather Station 1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Utility Classes</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, Gavrila Andreea-Alexandra, Barbulet Ana-Maria, Cacu Razvan.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    </div>
+  </body>
+</html>

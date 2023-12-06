@@ -307,16 +307,3 @@ class SH1106_SPI(SH1106):
     def reset(self):
         super().reset(self.res)
 
-
-if __name__ == "__main__":
-    # I2C(id, scl, sda, freq)
-    i2c = I2C(0, scl=Pin(22), sda=Pin(21), freq=100_000)
-
-    # SH1106_I2C(width, height, i2c, addr, rotate)
-    oled = SH1106_I2C(128, 64, i2c, addr=0x3c, rotate=180)
-    oled.sleep(False)
-    oled.contrast(50)  # Set contrast to 50 %
-
-    oled.text("Using OLED...", x=0, y=0)
-
-    oled.show()

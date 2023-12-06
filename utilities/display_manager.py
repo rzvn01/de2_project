@@ -1,7 +1,7 @@
 from machine import Pin, I2C
 from i2c_lcd import I2cLcd
 from oled_display import SH1106_I2C
-
+import time
 
 class DisplayManager():
     
@@ -17,7 +17,7 @@ class DisplayManager():
         # Init I2C using pins GP22 & GP21 (default I2C0 pins)
         self.i2c = I2C(0, scl=Pin(22), sda=Pin(21), freq=400_000)
         
-        #self.oled = SH1106_I2C(self.WIDTH, self.HEIGHT, self.i2c, addr=0x3C, rotate=180)
+        self.oled = SH1106_I2C(self.WIDTH, self.HEIGHT, self.i2c, addr=0x3C, rotate=180)
 
         self.i2c_addr = 0x27
         self.lcd = I2cLcd(self.i2c, self.i2c_addr, num_lines=2, num_columns=16)
@@ -87,6 +87,11 @@ class DisplayManager():
        
         time.sleep(1)
         
+    def oled_print(self,text,x,y):
+        oled.text(text,x,y)
+        oled.show()
         
-
+        
+        
+      
         

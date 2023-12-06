@@ -1,0 +1,154 @@
+.. _forecast_open_weather_example:
+
+Forecast OpenWeather Example
+===========================
+
+This example demonstrates how to fetch weather forecast data using the OpenWeather API and display it on the Weather Station.
+
+.. contents:: Table of Contents
+   :local:
+   :depth: 2
+
+Introduction
+------------
+
+The `forecast_open_weather_example.py` script provides functionality to connect to the OpenWeather API, retrieve forecast data for a specific city, and display relevant information on the Weather Station.
+
+Usage
+-----
+
+To use this example:
+
+1. Update the `WIFI_SSID` and `WIFI_PSWD` variables with your Wi-Fi credentials.
+2. Upload and run the script on your ESP32 device.
+
+Class Initialization
+~~~~~~~~~~~~~~~~~~~~
+
+The `WeatherDisplay` class is initialized with necessary parameters, including instances of `WiFiManager` and `DisplayManager`.
+
+.. code-block:: python
+
+   class WeatherDisplay:
+       def __init__(self, wifiManager, displayManager):
+           """
+           Initialize the WeatherDisplay class.
+
+           :param wifiManager: Instance of WiFiManager for managing Wi-Fi connections.
+           :type wifiManager: WiFiManager
+           :param displayManager: Instance of DisplayManager for managing the display.
+           :type displayManager: DisplayManager
+           """
+           # Initialization code
+
+Reading Sensors
+~~~~~~~~~~~~~~~~
+
+The `read_sensors` method reads data from various sensors, including a soil moisture sensor, a light sensor, and a BME sensor.
+
+.. code-block:: python
+
+   def read_sensors(self):
+       """
+       Reads data from various sensors, including a soil moisture sensor, a light sensor, and a BME sensor.
+
+       This method collects data from different environmental sensors integrated into the system. It reads the moisture level from a soil moisture sensor,
+       a simulated light intensity value (to be replaced with an actual light sensor reading in the future), and temperature, humidity, and pressure from a BME sensor.
+
+       :return: A tuple containing sensor readings in the following order - soil moisture level, light intensity, temperature, humidity, and pressure.
+       :rtype: tuple
+       """
+       # Sensor reading code
+
+Displaying Sensor Values
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `display_sensor_values` method displays sensor values on the connected display.
+
+.. code-block:: python
+
+   def display_sensor_values(self, moisture, light_intensity, temp, hum, pres):
+       """
+       Displays sensor values on the connected display.
+
+       This method takes sensor readings as parameters and displays them on the connected display using the `DisplayManager`.
+
+       :param moisture: Soil moisture level.
+       :type moisture: float
+       :param light_intensity: Light intensity.
+       :type light_intensity: float
+       :param temp: Temperature.
+       :type temp: float
+       :param hum: Humidity.
+       :type hum: float
+       :param pres: Pressure.
+       :type pres: float
+       :return: None
+       """
+       # Display code
+
+Fetching Weather Data
+~~~~~~~~~~~~~~~~~~~~~
+
+The `fetch_weather_data` method connects to Wi-Fi, fetches weather forecast data from OpenWeather, and disconnects Wi-Fi.
+
+.. code-block:: python
+
+   def fetch_weather_data(self):
+       """
+       Fetches weather forecast data from the OpenWeather API.
+
+       This method connects to Wi-Fi, makes a request to the OpenWeather API, retrieves forecast data, and disconnects from Wi-Fi.
+
+       :return: Weather forecast data.
+       :rtype: dict
+       """
+       # Weather data fetching code
+
+Displaying Weather Information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `display_weather` method iterates through the forecast data, extracts relevant information, and displays it on the connected display.
+
+.. code-block:: python
+
+   def display_weather(self):
+       """
+       Displays weather information on the connected display.
+
+       This method fetches weather forecast data, extracts relevant information, and displays it on the connected display using the `DisplayManager`.
+
+       :return: None
+       """
+       # Weather display code
+
+Updating Time
+~~~~~~~~~~~~~
+
+The `upd_time` method fetches the current date and time from the World Time API for the Europe/Rome timezone.
+
+.. code-block:: python
+
+   def upd_time(self):
+       """
+       Fetches the current date and time from the World Time API for the Europe/Rome timezone.
+
+       This method sends a request to the World Time API, extracts the relevant information, and returns a formatted string representing the
+       last update time. The returned string includes the day and month of the update, as well as the hour and minute in 24-hour format.
+
+       :return: A formatted string indicating the last update time in the "Upd. DD/MM HH:mm" format.
+       :rtype: str
+       """
+       # Time update code
+
+Main Execution
+~~~~~~~~~~~~~
+
+The `if __name__ == "__main__":` block initializes the necessary managers and enters a loop to continuously display weather information.
+
+.. code-block:: python
+
+   if __name__ == "__main__":
+       # Main execution code
+
+This example provides a comprehensive demonstration of integrating Wi-Fi connectivity, sensor readings, API requests, and display management for a Weather Station application.

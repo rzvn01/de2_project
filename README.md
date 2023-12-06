@@ -115,9 +115,43 @@ following text was tested under Linux-based operating system.
     esptool.py --chip esp32 --port /dev/ttyUSB0 write_flash -z 0x1000 esp32-20230426-v1.20.0.bin
     ```
 
-## Generating the Documentation
 
-//TODO
+## Generate SPHINX Documentation
+
+To generate the documentation using Sphinx, follow these steps:
+
+1. **Navigate to the source directory:**
+
+    ```bash
+    cd \doc
+    ```
+
+2. **Build the HTML documentation using Sphinx:**
+
+    ```bash
+    sphinx-build -b html . _build\html
+    ```
+
+   This command generates HTML documentation from the source files (current directory `.`) and places the output in the `_build\html` directory.
+
+3. **Change to the HTML output directory:**
+
+    ```bash
+    cd _build\html\
+    ```
+
+4. **Open the `index.html` file in a web browser:**
+
+    ```bash
+    start index.html
+    ```
+
+## Viewing Documentation
+
+You can view the generated HTML documentation by opening the `index.html` file in a web browser.
+
+> **NOTE:** Ensure that you have Sphinx installed before following these steps (`pip install sphinx`).*
+
 
 ## Running the Application
 
