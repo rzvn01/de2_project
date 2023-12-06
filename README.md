@@ -148,7 +148,7 @@ To generate the documentation using Sphinx, follow these steps:
 
 ## Viewing Documentation
 
-You can view the generated HTML documentation by opening the `index.html` file in a web browser.
+You can view the generated HTML documentation by opening the [index.html](https://github.com/rzvn01/de2_project/blob/main/doc/_build/html/index.html) file in a web browser.
 
 > **NOTE:** Ensure that you have Sphinx installed before following these steps (`pip install sphinx`).*
 

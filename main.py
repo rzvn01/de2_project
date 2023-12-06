@@ -32,6 +32,7 @@ class WeatherDisplay:
         self.bme = bme280.BME280(i2c=self.i2c, addr=0x76)
         self.ldr = LDR(self.LDR_PIN)
         self.displayManager = displayManager
+        self.water_sensor=WaterSensor(self.WATER_SENSOR_PIN)
 
     def read_sensors(self):
         

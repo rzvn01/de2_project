@@ -64,7 +64,7 @@ NOTE: The MicroPython firmware can also be flashed by Thonny IDE.
 
 
 **Demo video**
-    You can find a short video demonstrating the project functionality `here! <https://github-production-user-asset-6210df.s3.amazonaws.com/100044309/288198043-b4316866-3fb9-4cb9-b8db-3046aaa8ed4d.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20231205%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231205T212200Z&X-Amz-Expires=300&X-Amz-Signature=23d58c3d78d4905623290399ac13997d8c84b4cf8f86222df5795fdf93ee4fe4&X-Amz-SignedHeaders=host&actor_id=148204733&key_id=0&repo_id=721313266/>`_
+    You can find a short video demonstrating the project functionality `here! <https://github.com/rzvn01/de2_project/assets/100044309/8582fe24-e609-41d4-9360-a862de1b71ff/>`_
 
 References
 ------------
