@@ -28,12 +28,9 @@ class WeatherDisplay:
         self.units = "metric"
 
         self.i2c = I2C(0, scl=Pin(22), sda=Pin(21), freq=400_000)
+        
         self.bme = bme280.BME280(i2c=self.i2c, addr=0x76)
-
-
-
         self.ldr = LDR(self.LDR_PIN)
-
         self.displayManager = displayManager
 
     def read_sensors(self):
@@ -189,9 +186,11 @@ if __name__ == "__main__":
         weather_display.display_weather()
 
         displayManager.oled.fill(0)
+        
         displayManager.oled_print("Disconnecting", 0, 20)
         displayManager.oled_print("from wifi...", 0, 40)
         wifiManager.disconnect_wifi()
+        
         displayManager.oled.fill(0)
 
         deepsleep(90)

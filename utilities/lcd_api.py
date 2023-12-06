@@ -169,50 +169,7 @@ class LcdApi:
             self.hal_sleep_us(40)
         self.move_to(self.cursor_x, self.cursor_y)
 
-    def lcd_double_print(self, first_sensor, first_value, second_sensor,second_value):
-        
-        self.clear()
-        self.move_to(0,0)
-        self.print(first_sensor)
-
-        lcd.move_to(8,0)
-        lcd.print(":")
-        
-        if first_value[1]=='.':
-            lcd.move_to(11,0)
-        else:
-            lcd.move_to(10,0)        
-        lcd.print(first_value)
-       
-        lcd.move_to(0,1)
-        lcd.print(second_sensor)
-        
-        lcd.move_to(8,1)
-        lcd.print(":")
-
-        if second_value[1]=='.':
-            lcd.move_to(11,1)
-        else:
-            lcd.move_to(10,1)        
-            lcd.print(second_value)
-            
-        sleep(1)
-
-    def lcd_single_print(first_sensor, first_value):
-        
-        lcd.clear()
-        lcd.move_to(0,0)
-        lcd.print(first_sensor)
-        
-        lcd.move_to(8,0)
-        lcd.print(":")
-        
-        lcd.move_to(7,1)        
-        lcd.print(first_value)
-       
-        sleep(1)
-        
-        
+               
     def hal_backlight_on(self):
         """Allows the hal layer to turn the backlight on.
 
