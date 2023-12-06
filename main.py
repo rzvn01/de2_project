@@ -1,16 +1,12 @@
-from machine import ADC, Pin, I2C, deepsleep, lightsleep
-from lcd_api import LcdApi
-from i2c_lcd import I2cLcd
+from machine import Pin, I2C, deepsleep
 from time import sleep
 from ldr import LDR
 from water_sensor import WaterSensor
 from wifi_manager import WiFiManager
-from lcd_oled import SH1106_I2C
-from machine import soft_reset
+
 import bme280
 import urequests
 import json
-import network
 from display_manager import DisplayManager
 
 
@@ -33,7 +29,9 @@ class WeatherDisplay:
 
         self.i2c = I2C(0, scl=Pin(22), sda=Pin(21), freq=400_000)
         self.bme = bme280.BME280(i2c=self.i2c, addr=0x76)
-        self.water_sensor = WaterSensor(self.WATER_SENSOR_PIN)
+
+
+
         self.ldr = LDR(self.LDR_PIN)
 
         self.displayManager = displayManager

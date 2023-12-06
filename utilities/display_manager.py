@@ -2,7 +2,6 @@ from machine import Pin, I2C
 from lcd_api import LcdApi
 from i2c_lcd import I2cLcd
 from lcd_oled import SH1106_I2C
-from machine import soft_reset
 
 
 class DisplayManager():

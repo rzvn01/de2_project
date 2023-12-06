@@ -125,15 +125,20 @@ following text was tested under Linux-based operating system.
 2. Make sure all files are saved into microcontroller's memory.
 3. The displays should show real-time data from the sensors, including light levels, water presence, temperature,
    humidity, and pressure.
-> **NOTE:** The wrapper for functionality must be saved as `main.py` in order to get the desired behaviour for  `deepsleep()` function.
 
-   ![circuit](photos/circuit.png)
+> **NOTE:** The wrapper for functionality must be saved as `main.py` in order to get the desired behaviour
+> for  `deepsleep()` function.
+
+![circuit](photos/circuit.png)
+
 ## Troubleshooting
+
 - If the device fails to connect to Wi-Fi, check your credentials and network availability.
 - Ensure the sensors are correctly wired.
 - Make sure all packages are up-to-date and not deprecated.
 
-## Demo Video 
+## Demo Video
+
 https://github.com/rzvn01/de2_project/assets/100044309/b4316866-3fb9-4cb9-b8db-3046aaa8ed4d
 
 ## References
@@ -143,3 +148,4 @@ https://github.com/rzvn01/de2_project/assets/100044309/b4316866-3fb9-4cb9-b8db-3
 3. ESP8266 Documentation: [ESP32 MicroPython](https://docs.micropython.org/en/latest/esp32/quickref.html)
 4. BME280
    Datasheet: [BME280 Datasheet](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf)
+5. LCD 1602A [LCD Datash](https://hades.mech.northwestern.edu/images/f/f7/LCD16x2_HJ1602A.pdf)
