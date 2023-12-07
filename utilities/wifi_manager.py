@@ -16,8 +16,7 @@ class WiFiManager:
 
         :return: None
         """
-        from time import sleep_ms
-
+        
         if not self.wifi.isconnected():
             # Activate the Wi-Fi interface
             self.wifi.active(True)

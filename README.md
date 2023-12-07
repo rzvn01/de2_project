@@ -173,7 +173,7 @@ You can view the generated HTML documentation by opening the [index.html](https:
 
 ## Demo Video
 
-https://github.com/rzvn01/de2_project/assets/100044309/b4316866-3fb9-4cb9-b8db-3046aaa8ed4d
+https://github.com/rzvn01/de2_project/assets/100044309/8582fe24-e609-41d4-9360-a862de1b71ff
 
 ## References
 
