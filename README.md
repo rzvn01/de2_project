@@ -53,7 +53,9 @@ The software consists of several components:
     - Manages the displays.
     - Source File: [display_manager.py](https://github.com/rzvn01/de2_project/blob/main/utilities/display_manager.py)
     - Usage: `displayManager = DisplayManager()`
-
+   
+## FlowChart
+  ![flowchart](photos/flowchart_general.jpg)
 ## Setting Up the Hardware
 
 1. Connect LDRs, water sensors, the BME280 sensor, and the displays to the microcontroller according to the provided
@@ -164,6 +166,9 @@ You can view the generated HTML documentation by opening the [index.html](https:
 > for  `deepsleep()` function.
 
 ![circuit](photos/circuit.png)
+
+## See Results on ThingSpeak
+In order to see charts of the measurements obtained from the sensors visit the following [link](https://thingspeak.com/channels/2364561).
 
 ## Troubleshooting
 
