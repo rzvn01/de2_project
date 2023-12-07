@@ -21,7 +21,7 @@ class WeatherDisplay:
         
         self.LDR_PIN = 39
         self.WATER_SENSOR_PIN = 36
-        self.api_key = "ce0138a17e760fac657ac45c93b0fa9b"
+        self.api_key = "<YOUR-API-KEY>"
         self.city = "BRNO,cz"  
         self.exclude = "current,minutely,hourly,alerts"
         self.units = "metric"
@@ -111,37 +111,37 @@ class WeatherDisplay:
                 else:
                     rain_qty = 0
 
-#                 humidity = day_data['main']['humidity']
-#                 pressure = day_data['main']['pressure']
-#                 wind = day_data['wind']['speed']
-#                 weather_type = day_data['weather'][0]['main']
-# 
-#                 self.displayManager.lcd.clear()
-#                 self.displayManager.lcd.move_to(0, 0)
-#                 self.displayManager.lcd.print(day_data['dt_txt'])
-#                 self.displayManager.lcd.move_to(0, 1)
-#                 self.displayManager.lcd.print("Weather: " + weather_type)
-# 
-#                 self.displayManager.oled.fill(0)
-#                 self.displayManager.oled_print("FORECAST FEATURE", 0, 0)
-#                 self.displayManager.oled_print("Temperature:" + str(temp) + "C", 0, 10)
-#                 self.displayManager.oled_print("Wind:" + str(wind) + "km/h", 0, 20)
-#                 self.displayManager.oled_print("Rain:" + str(rain_qty) + "%", 0, 30)
-#                 self.displayManager.oled_print("Pressure:" + str(pressure) + "hPa", 0, 40)
-#                 self.displayManager.oled_print("Humidity:" + str(humidity) + "%", 0, 50)
+                humidity = day_data['main']['humidity']
+                pressure = day_data['main']['pressure']
+                wind = day_data['wind']['speed']
+                weather_type = day_data['weather'][0]['main']
+
+                self.displayManager.lcd.clear()
+                self.displayManager.lcd.move_to(0, 0)
+                self.displayManager.lcd.print(day_data['dt_txt'])
+                self.displayManager.lcd.move_to(0, 1)
+                self.displayManager.lcd.print("Weather: " + weather_type)
+
+                self.displayManager.oled.fill(0)
+                self.displayManager.oled_print("FORECAST FEATURE", 0, 0)
+                self.displayManager.oled_print("Temperature:" + str(temp) + "C", 0, 10)
+                self.displayManager.oled_print("Wind:" + str(wind) + "km/h", 0, 20)
+                self.displayManager.oled_print("Rain:" + str(rain_qty) + "%", 0, 30)
+                self.displayManager.oled_print("Pressure:" + str(pressure) + "hPa", 0, 40)
+                self.displayManager.oled_print("Humidity:" + str(humidity) + "%", 0, 50)
                 sleep(2)
 
-#         self.displayManager.oled.fill(0)
-#         self.displayManager.oled_print("READING DATA  ", 15, 20)
-#         self.displayManager.oled_print("FROM OUR SENSORS", 0, 40)
+        self.displayManager.oled.fill(0)
+        self.displayManager.oled_print("READING DATA  ", 15, 20)
+        self.displayManager.oled_print("FROM OUR SENSORS", 0, 40)
 
         moisture, light_intensity, temp, hum, pres = self.read_sensors()
         self.display_sensor_values(moisture, light_intensity, temp, hum, pres)
         self.displayManager.lcd.clear()
 
-#         self.displayManager.oled.fill(0)
-#         self.displayManager.oled_print("UPLOADING DATA", 0, 20)
-#         self.displayManager.oled_print("TO THINGSPEAK", 0, 40)
+        self.displayManager.oled.fill(0)
+        self.displayManager.oled_print("UPLOADING DATA", 0, 20)
+        self.displayManager.oled_print("TO THINGSPEAK", 0, 40)
 
         self.send_to_thingspeak(moisture, temp, hum, pres, light_intensity)
 
@@ -158,7 +158,7 @@ class WeatherDisplay:
         """
 
         API_URL = "https://api.thingspeak.com/update"
-        API_KEY = "DO2L1H0RIXIHDZ3A"
+        API_KEY = "<YOUR-API-KEY>"
 
         # POST request
         request_url = f"{API_URL}?api_key={API_KEY}"
@@ -172,25 +172,25 @@ class WeatherDisplay:
 
 if __name__ == "__main__":
     
-    wifiManager = WiFiManager(ssid="rrrr", password="12345678")
+    wifiManager = WiFiManager(ssid="wfi-name", password="password")
     displayManager = DisplayManager()
     weather_display = WeatherDisplay(displayManager)
 
     while True:
         
-#         displayManager.oled.fill(0)
-#         displayManager.oled_print("Connecting to ", 0, 20)
-#         displayManager.oled_print("wifi...", 0, 40)
+        displayManager.oled.fill(0)
+        displayManager.oled_print("Connecting to ", 0, 20)
+        displayManager.oled_print("wifi...", 0, 40)
         wifiManager.connect_wifi()
 
         weather_display.display_weather()
 
-#         displayManager.oled.fill(0)
+        displayManager.oled.fill(0)
         
-#         displayManager.oled_print("Disconnecting", 0, 20)
-#         displayManager.oled_print("from wifi...", 0, 40)
+        displayManager.oled_print("Disconnecting", 0, 20)
+        displayManager.oled_print("from wifi...", 0, 40)
         wifiManager.disconnect_wifi()
         
-#         displayManager.oled.fill(0)
+        displayManager.oled.fill(0)
 
         deepsleep(90)
